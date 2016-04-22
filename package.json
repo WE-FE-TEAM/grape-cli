@@ -1,0 +1,23 @@
+{
+  "name": "grape-cli",
+  "version": "0.0.1",
+  "description": "grape js cli tools",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "bin": {
+    "grape": "bin/grape.js"
+  },
+  "dependencies": {
+    "fis-parser-node-sass": "^0.1.9",
+    "fis-parser-typescript": "^0.2.2",
+    "fis3": "^3.3.29",
+    "fis3-hook-commonjs": "^0.1.15",
+    "fis3-hook-node_modules": "^2.0.19",
+    "fs-extra": "^0.27.0",
+    "liftoff": "^2.2.1",
+    "minimist": "^1.2.0",
+    "yogurt-postprocessor-require-async": "0.0.3",
+    "yogurt-preprocessor-extlang": "0.0.2"
+  }
+}
