@@ -1,6 +1,6 @@
 {
   "name": "grape-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "grape js cli tools",
   "main": "index.js",
   "author": "",
@@ -14,6 +14,8 @@
     "fis3": "^3.3.29",
     "fis3-hook-commonjs": "^0.1.15",
     "fis3-hook-node_modules": "^2.0.19",
+    "fis3-preprocessor-js-require-css": "^0.1.0",
+    "fis3-preprocessor-js-require-file": "^0.1.0",
     "fs-extra": "^0.27.0",
     "liftoff": "^2.2.1",
     "minimist": "^1.2.0",

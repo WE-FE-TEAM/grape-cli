@@ -10,7 +10,7 @@ let fis = module.exports = require('fis3');
 fis.require.prefixes.unshift('yogurt');
 fis.require.prefixes.unshift('grape');
 fis.cli.name = 'grape';
-fis.cli.info = require('../package.json');
+fis.cli.info = require('./package.json');
 
 fis.set('app', '/app');
 fis.set('static', '/static');
@@ -35,7 +35,11 @@ let clientRoadmap = {
     'client/**.{tpl,js,ts,jsx,es,tsx}': {
         useSameNameRequire: true
     },
-    'client/**.{js,jsx,ts}' : {
+    'client/**.{js,jsx,ts,es}' : {
+        preprocessor: [
+            fis.plugin('js-require-file'),
+            fis.plugin('js-require-css')
+        ],
         parser : fis.plugin('typescript'),
         rExt: '.js'
     },
