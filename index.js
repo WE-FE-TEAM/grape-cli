@@ -9,6 +9,7 @@ let fis = module.exports = require('fis3');
 
 fis.require.prefixes.unshift('yogurt');
 fis.require.prefixes.unshift('grape');
+
 fis.cli.name = 'grape';
 fis.cli.info = require('./package.json');
 
@@ -16,6 +17,11 @@ fis.set('app', '/app');
 fis.set('static', '/static');
 fis.set('template', '/views');
 fis.set('map', '/resource-map');
+
+//添加 grape run命令
+fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
+fis.require._cache['command-run'] = require('./command/run.js');
+
 
 let clientRoadmap = {
     'client/(**)': {
