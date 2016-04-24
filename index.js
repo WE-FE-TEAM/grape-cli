@@ -7,6 +7,7 @@
 
 let fis = module.exports = require('fis3');
 
+//插件查找前缀
 fis.require.prefixes.unshift('yogurt');
 fis.require.prefixes.unshift('grape');
 
@@ -88,6 +89,9 @@ let serverRoadmap = {
         useDomain: false,
         isMod: false,
         release: '${app}/${namespace}/$0'
+    },
+    'server/**.js' : {
+        parser : fis.plugin('babel-5.x') //无法使用typescript编译,不支持async
     }
 };
 
@@ -97,7 +101,7 @@ let serverRoadmap = {
     });
 });
 
-// 模块化支持
+//模块化支持
 fis.hook('commonjs', {
     extList: ['.js', '.es', '.ts', '.tsx', '.jsx']
 });
@@ -106,24 +110,35 @@ fis.hook('commonjs', {
 fis.unhook('components'); // fis3 中预设的是 fis-components，这里不需要，所以先关了。
 fis.hook('node_modules'); // 使用 fis3-hook-node_modules 插件。
 
-// 设置成是模块化 js
+/**
+ * node_modules下的静态资源作为模块化处理
+ */
 fis.match('/node_modules/(**.{js,jsx})', {
     isMod: true,
     url : '${static}/nm/$1',
     release : '/${static}/nm/$1'
 });
 
-
+/**
+ * prod media 对静态资源进行压缩,md5产出
+ */
 fis.media('prod')
-    .match("/node_modules/**.{js,jsx}", {
-        packTo : '/${static}/pkg/nm_pkg.js'
+    .match('/client/**.{js,jsx,ts}', {
+        useHash : true,
+        optimizer : fis.plugin('uglify-js')
     })
-    .match('/widget/(**.{css,scss})', {
-        packTo : '/${static}/pkg/${namespace}_wdg.css'
+    .match('/client/**.{css,scss}', {
+        useHash : true,
+        optimizer : fis.plugin('clean-css')
+    })
+    .match('/client/**.{png,gif,jpg,jpeg}', {
+        useHash : true,
+        optimizer : fis.plugin('png-compressor')
     });
 
-
-// map.json
+/**
+ * 生成map.json文件
+ */
 fis.match('::package', {
     postpackager: function createMap(ret) {
         var path = require('path');

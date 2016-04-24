@@ -9,6 +9,10 @@ const spawn = require('child_process').spawn;
 
 let grapeUtil = require('../lib/util.js');
 
+/**
+ * grape run命令只能在项目根目录执行
+ */
+
 exports.name = 'run';
 exports.desc = 'run grape server with nodemon';
 exports.register = function (commander) {
