@@ -10,7 +10,7 @@ var path = require('path');
 var cli = new Liftoff({
     name: 'grape', // 命令名字
     processTitle: 'grape',
-    moduleName: 'grapejs',
+    moduleName: 'grape-cli',
     configName: 'fis-conf',
 
     // only js supported!
@@ -24,13 +24,16 @@ cli.launch({
     configPath: argv.f || argv.file
 }, function(env) {
     var fis;
+
+    console.log(env.modulePath);
+
     if (!env.modulePath) {
         fis = require('../index.js');
     } else {
         fis = require(env.modulePath);
     }
-    // fis.set('system.localNPMFolder', path.join(env.cwd, 'node_modules/grapejs'));
-    // fis.set('system.globalNPMFolder', path.dirname(__dirname));
+    fis.set('system.localNPMFolder', path.join(env.cwd, 'node_modules/grape-cli'));
+    fis.set('system.globalNPMFolder', path.dirname(__dirname));
     fis.cli.run(argv, env);
 });
 

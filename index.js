@@ -5,7 +5,10 @@
 
 "use strict";
 
+const path = require('path');
 let fis = module.exports = require('fis3');
+
+const grapeUtil = require('./lib/util.js');
 
 //插件查找前缀
 fis.require.prefixes.unshift('yogurt');
@@ -19,10 +22,13 @@ fis.set('static', '/static');
 fis.set('template', '/views');
 fis.set('map', '/resource-map');
 
+fis.project.setProjectRoot(process.cwd());
+
 //添加 grape run命令
 fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
 fis.require._cache['command-run'] = require('./command/run.js');
 
+fis.grapeUtil = grapeUtil;
 
 let clientRoadmap = {
     'client/(**)': {
@@ -47,25 +53,23 @@ let clientRoadmap = {
             fis.plugin('js-require-file'),
             fis.plugin('js-require-css')
         ],
-        parser : fis.plugin('typescript'),
+        parser : fis.plugin('babel-5.x'),
         rExt: '.js'
-    },
-    'client/page/**.tpl': {
-        extras: {
-            isPage: true
-        }
     },
     'client/(page/**.tpl)': {
         url: '${namespace}/$1',
         release: '/${template}/${namespace}/$1',
-        useMap: true
+        useMap: true,
+        extras: {
+            isPage: true
+        }
     },
     'client/(widget/**.tpl)': {
         url: '${namespace}/$1',
         release: '/${template}/${namespace}/$1',
         useMap: true
     },
-    'client/widget/**.{js,es,ts,tsx,jsx,css,less}': {
+    'client/{widget,page}/**.{js,es,ts,tsx,jsx,css,less}': {
         isMod: true
     },
     'client/test/(**)': {
@@ -101,8 +105,16 @@ let serverRoadmap = {
     });
 });
 
-//模块化支持
+let projectDir = path.dirname(fis.project.getProjectPath());
+let modulesDir = projectDir + '/common/node_modules';
+let distDir = projectDir + '/../dist/';
+let npmModule = 'common';
+
+let npmPackage = grapeUtil.getNpmPackage(modulesDir, npmModule);
+
+// //模块化支持
 fis.hook('commonjs', {
+    packages: npmPackage,
     extList: ['.js', '.es', '.ts', '.tsx', '.jsx']
 });
 
