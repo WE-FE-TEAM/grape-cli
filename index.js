@@ -24,6 +24,12 @@ fis.set('map', '/resource-map');
 
 fis.project.setProjectRoot(process.cwd());
 
+fis.config.set('settings.parser.babel-5.x', {
+   // blacklist: ['regenerator'],
+    optional : ['runtime'],
+    //stage: 3
+});
+
 //添加 grape run命令
 fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
 fis.require._cache['command-run'] = require('./command/run.js');
