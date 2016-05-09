@@ -24,12 +24,6 @@ fis.set('map', '/resource-map');
 
 fis.project.setProjectRoot(process.cwd());
 
-fis.config.set('settings.parser.babel-5.x', {
-   // blacklist: ['regenerator'],
-    optional : ['runtime'],
-    //stage: 3
-});
-
 //添加 grape run命令
 fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
 fis.require._cache['command-run'] = require('./command/run.js');
@@ -101,7 +95,9 @@ let serverRoadmap = {
         release: '${app}/${namespace}/$0'
     },
     'server/**.js' : {
-        parser : fis.plugin('babel-5.x') //无法使用typescript编译,不支持async
+        parser : fis.plugin('babel-5.x', {
+            optional : ['runtime']
+        }) //无法使用typescript编译,不支持async
     }
 };
 

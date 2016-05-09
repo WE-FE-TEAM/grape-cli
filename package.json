@@ -1,6 +1,6 @@
 {
   "name": "grape-cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "grape js cli tools",
   "main": "index.js",
   "author": "wangcheng714",
