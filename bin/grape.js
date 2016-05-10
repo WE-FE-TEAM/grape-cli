@@ -24,9 +24,6 @@ cli.launch({
     configPath: argv.f || argv.file
 }, function(env) {
     var fis;
-
-    console.log(env.modulePath);
-
     if (!env.modulePath) {
         fis = require('../index.js');
     } else {
