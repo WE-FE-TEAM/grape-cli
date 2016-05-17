@@ -23,6 +23,12 @@ fis.set('template', '/views');
 fis.set('map', '/resource-map');
 
 fis.project.setProjectRoot(process.cwd());
+//
+// fis.config.set('settings.parser.babel-5.x', {
+//    // blacklist: ['regenerator'],
+//     ,
+//     //stage: 3
+// });
 
 //添加 grape run命令
 fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
@@ -112,17 +118,29 @@ let modulesDir = projectDir + '/common/node_modules';
 let distDir = projectDir + '/../dist/';
 let npmModule = 'common';
 
-let npmPackage = grapeUtil.getNpmPackage(modulesDir, npmModule);
 
-// //模块化支持
-fis.hook('commonjs', {
-    packages: npmPackage,
-    extList: ['.js', '.es', '.ts', '.tsx', '.jsx']
+fis.on('conf:loaded', function () {
+
+    //模块化支持
+    let npmPackage = grapeUtil.getNpmPackage(modulesDir, npmModule, fis.get('excludeModules'));
+    fis.hook('commonjs', {
+        packages: npmPackage,
+        extList: ['.js', '.es', '.ts', '.tsx', '.jsx']
+    });
+    fis.unhook('components'); // fis3 中预设的是 fis-components，这里不需要，所以先关了。
+    fis.hook('node_modules'); // 使用 fis3-hook-node_modules 插件。
+
+    /**
+     * 定制 grape release发布地址
+     */
+    let distDir = fis.get('distDir');
+    fis.match('**', {
+        deploy: fis.plugin('local-deliver', {
+            to: fis.get('options.d') ||  fis.get('options.dest') || distDir
+        })
+    });
+
 });
-
-
-fis.unhook('components'); // fis3 中预设的是 fis-components，这里不需要，所以先关了。
-fis.hook('node_modules'); // 使用 fis3-hook-node_modules 插件。
 
 /**
  * node_modules下的静态资源作为模块化处理
