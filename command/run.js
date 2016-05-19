@@ -17,7 +17,7 @@ exports.name = 'run';
 exports.desc = 'run grape server with nodemon';
 exports.register = function (commander) {
     commander
-        .option('-e, --env [env]', 'set GRAPE_ENV', String, 'dev')
+        .option('-e, --env [env]', 'set NODE_ENV', String, 'development')
         .action(function () {
             let options = arguments[arguments.length - 1];
             let checkResult = grapeUtil.checkProject();
@@ -35,14 +35,30 @@ function startServer(options) {
     let env = process.env;
     let serverProcess = null;
 
-    env.grape_env = options.env || '';
+    env.grape_env = options.env || 'development';
 
-    if(/^win/.test(platform)){
-        serverProcess = spawn('npm.cmd', ['run', 'server:dev-win'], {
+    let scripts = grapeUtil.getPackageInfo('scripts');
+    let isWin = /^win/.test(platform) ? true : false;
+    let taskName = '';
+
+    if(isWin){
+        taskName = `server:${env.grape_env}-win`;
+    }else{
+        taskName = `server:${env.grape_env}`;
+    }
+
+
+    if(!scripts[taskName]){
+        console.log(`${taskName}不存在`);
+        taskName = isWin ? 'server:dev-win' : 'server:dev';
+    }
+
+    if(isWin){
+        serverProcess = spawn('npm.cmd', ['run', taskName], {
             env : env
         });
     }else{
-        serverProcess = spawn('npm', ['run', 'server:dev'], {
+        serverProcess = spawn('npm', ['run', taskName], {
             env : env
         });
     }
