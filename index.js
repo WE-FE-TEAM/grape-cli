@@ -59,7 +59,9 @@ let clientRoadmap = {
             fis.plugin('js-require-file'),
             fis.plugin('js-require-css')
         ],
-        parser : fis.plugin('babel-5.x'),
+        parser : fis.plugin('babel-5.x', {
+            loose: ["es6.classes", "es6.properties.computed"]
+        }),
         rExt: '.js'
     },
     'client/(page/**.tpl)': {
