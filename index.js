@@ -159,7 +159,9 @@ fis.match('/node_modules/(**.{js,jsx})', {
 fis.media('prod')
     .match('/client/**.{js,jsx,ts}', {
         useHash : true,
-        optimizer : fis.plugin('uglify-js')
+        optimizer : fis.plugin('uglify-js', {
+            mangle : false
+        })
     })
     .match('/client/**.{css,scss}', {
         useHash : true,
