@@ -103,8 +103,10 @@ let serverRoadmap = {
         release: '${app}/${namespace}/$0'
     },
     'server/**.js' : {
-        parser : fis.plugin('babel-5.x', {
-            optional : ['runtime']
+        //server JS使用 babel 6.X 编译,因为其他模块都依赖的 6.X
+        parser : fis.plugin('babel-6.x', {
+            plugins: ["transform-runtime"]
+            // optional : ['runtime']
         }) //无法使用typescript编译,不支持async
     }
 };
