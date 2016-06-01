@@ -105,7 +105,9 @@ let serverRoadmap = {
     'server/**.js' : {
         //server JS使用 babel 6.X 编译,因为其他模块都依赖的 6.X
         parser : fis.plugin('babel-6.x', {
-            plugins: ["transform-runtime"]
+            // plugins: ["transform-runtime"]
+            // 上面那种方式, 在jenkins编译时, 居然会报找不到: Unknown plugin "transform-runtime" specified in "base" 
+            plugins : [ require('babel-plugin-transform-runtime') ]
             // optional : ['runtime']
         }) //无法使用typescript编译,不支持async
     }
