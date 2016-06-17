@@ -60,6 +60,7 @@ let clientRoadmap = {
             fis.plugin('js-require-css')
         ],
         parser : fis.plugin('babel-5.x', {
+            blacklist: [ 'useStrict' ],
             loose: ["es6.classes", "es6.properties.computed"]
         }),
         rExt: '.js'
