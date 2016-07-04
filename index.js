@@ -152,7 +152,7 @@ fis.on('conf:loaded', function () {
 /**
  * node_modules下的静态资源作为模块化处理
  */
-fis.match('/node_modules/(**.{js,jsx,map})', {
+fis.match('/node_modules/(**.{js,jsx,map,css,scss,less,svg,jpg,png,gif,webp,jpeg})', {
     isMod: true,
     url : '${static}/nm/$1',
     release : '/${static}/nm/$1'
