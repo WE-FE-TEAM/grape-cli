@@ -168,9 +168,6 @@ fis.media('prod')
             mangle : false
         })
     })
-    .match('/static/pkg/**.{js,jsx,ts,css,scss}', {
-        useHash : true
-    })
     .match('/client/**.{css,scss}', {
         useHash : true,
         optimizer : fis.plugin('clean-css')
