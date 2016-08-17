@@ -10,6 +10,9 @@ let fis = module.exports = require('fis3');
 
 const grapeUtil = require('./lib/util.js');
 
+//lint配置
+const lintConf = require('./lib/lint/lintConf');
+
 //插件查找前缀
 fis.require.prefixes.unshift('yogurt');
 fis.require.prefixes.unshift('grape');
@@ -175,6 +178,35 @@ fis.media('prod')
     .match('/client/**.{png,gif,jpg,jpeg}', {
         useHash : true,
         optimizer : fis.plugin('png-compressor')
+    });
+
+/**
+ * lint media 对js进行代码校验
+ */
+fis.media('lint')
+    .match('/client/**.{js,jsx,ts}', {
+        lint: fis.plugin('eslint-with-jsx', {
+            "env": ["es6", "browser", "commonjs"],
+            "parserOptions": {
+                "ecmaVersion": 6,
+                "sourceType": "module",
+                "ecmaFeatures": {
+                    "jsx": true
+                }
+            },
+            "plugins": [
+                'jsx-a11y',
+                'react'
+            ],
+            "rules": lintConf.clientLint.rules
+        })
+    })
+    .match('/server/**.js',{
+        lint: fis.plugin('eslint-with-jsx', {
+            "env": ["es6","node","commonjs"],
+            "parser": "babel-eslint",
+            "rules": lintConf.serverLint.rules
+        })
     });
 
 /**

@@ -25,7 +25,8 @@
     "minimist": "1.2.0",
     "resolve": "1.1.7",
     "yogurt-postprocessor-require-async": "0.0.3",
-    "yogurt-preprocessor-extlang": "0.0.2"
+    "yogurt-preprocessor-extlang": "0.0.2",
+    "fis3-lint-eslint-with-jsx": "^1.0.0"
   },
   "devDependencies": {}
 }
