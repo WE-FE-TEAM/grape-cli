@@ -43,7 +43,7 @@ let clientRoadmap = {
         release: '/${static}/${namespace}/$1'
     },
     'client/**.scss': {
-        parser: fis.plugin('node-sass'),
+        parser: fis.plugin('node-sass-node7'),
         rExt: '.css'
     },
     'client/**.tpl': {
