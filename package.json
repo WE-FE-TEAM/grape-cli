@@ -1,6 +1,6 @@
 {
   "name": "grape-cli",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "grape js cli tools",
   "main": "index.js",
   "author": "wangcheng714",
@@ -11,7 +11,7 @@
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.9.0",
     "babel-runtime": "^6.9.2",
-    "browser-resolve": "1.11.1",
+    "browser-resolve": "1.11.2",
     "fis-parser-babel-5.x": "1.3.0",
     "fis-parser-babel-6.x": "^1.0.0",
     "fis-parser-node-sass-node7": "1.0.0",
@@ -23,7 +23,7 @@
     "fs-extra": "0.27.0",
     "liftoff": "2.2.1",
     "minimist": "1.2.0",
-    "resolve": "1.1.7",
+    "resolve": "1.2.0",
     "yogurt-postprocessor-require-async": "0.0.3",
     "yogurt-preprocessor-extlang": "0.0.2"
   },
