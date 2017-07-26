@@ -1,6 +1,6 @@
 {
   "name": "grape-cli",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "grape js cli tools",
   "main": "index.js",
   "author": "wangcheng714",
@@ -20,6 +20,7 @@
     "fis3-hook-node_modules": "^2.0.20",
     "fis3-parser-vue-component": "^5.4.0",
     "fis3-postprocessor-autoprefixer-we": "1.0.0",
+    "fis3-preprocessor-define": "^1.1.0",
     "fis3-preprocessor-js-require-css": "0.1.0",
     "fis3-preprocessor-js-require-file": "0.1.0",
     "fs-extra": "0.27.0",
