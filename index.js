@@ -43,7 +43,7 @@ let clientRoadmap = {
         release: '/${static}/${namespace}/$1'
     },
     'client/**.scss': {
-        parser: fis.plugin('node-sass'),
+        parser: fis.plugin('node-sass-we'),
         rExt: '.css'
     },
     'client/**.tpl': {
@@ -103,15 +103,16 @@ let serverRoadmap = {
         isMod: false,
         release: '${app}/${namespace}/$0'
     },
-    'server/**.js' : {
+    // add by liucong,20170810，升级Node.js 8.3.0，不再编译server端代码
+    //'server/**.js' : {
         //server JS使用 babel 6.X 编译,因为其他模块都依赖的 6.X
-        parser : fis.plugin('babel-6.x', {
+        //parser : fis.plugin('babel-6.x', {
             // plugins: ["transform-runtime"]
             // 上面那种方式, 在jenkins编译时, 居然会报找不到: Unknown plugin "transform-runtime" specified in "base" 
-            plugins : [ require('babel-plugin-transform-runtime') ]
+            //plugins : [ require('babel-plugin-transform-runtime') ]
             // optional : ['runtime']
-        }) //无法使用typescript编译,不支持async
-    }
+        //}) //无法使用typescript编译,不支持async
+    //}
 };
 
 [clientRoadmap, serverRoadmap].forEach(function (roadmap) {

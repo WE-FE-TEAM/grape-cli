@@ -1,6 +1,6 @@
 {
   "name": "grape-cli",
-  "version": "0.4.2",
+  "version": "1.0.0",
   "description": "grape js cli tools",
   "main": "index.js",
   "author": "wangcheng714",
@@ -26,7 +26,7 @@
     "fs-extra": "0.27.0",
     "liftoff": "2.2.1",
     "minimist": "1.2.0",
-    "resolve": "1.1.7",
+    "resolve": "1.2.0",
     "yogurt-postprocessor-require-async": "0.0.3",
     "yogurt-preprocessor-extlang": "0.0.2"
   },
