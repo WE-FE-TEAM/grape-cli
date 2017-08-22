@@ -36,6 +36,12 @@ fis.require._cache['command-run'] = require('./command/run.js');
 
 fis.grapeUtil = grapeUtil;
 
+
+let projectDir = path.dirname(fis.project.getProjectPath());
+let modulesDir = projectDir + '/common/node_modules';
+let distDir = projectDir + '/../dist/';
+let npmModule = 'common';
+
 let clientRoadmap = {
     'client/(**)': {
         id: '$1',
@@ -57,13 +63,66 @@ let clientRoadmap = {
     'client/**.{js,jsx,ts,es}' : {
         preprocessor: [
             fis.plugin('js-require-file'),
-            fis.plugin('js-require-css')
+            fis.plugin('js-require-css'),
+            fis.plugin('define', {
+                defines: {
+                    'process.env.NODE_ENV': JSON.stringify('development')
+                }
+            })
         ],
         parser : fis.plugin('babel-5.x', {
             blacklist: [ 'useStrict' ],
             loose: ["es6.classes", "es6.properties.computed"]
         }),
         rExt: '.js'
+    },
+    'client/**.vue' : {
+        isMod: true,
+        rExt: 'js',
+        useSameNameRequire: true,
+        parser: [
+            fis.plugin('vue-component', {
+                // vue@2.x runtimeOnly
+                runtimeOnly: true,          // vue@2.x 有runtimeOnly模式，为true时，template会在构建时转为render方法
+
+                // styleNameJoin
+                styleNameJoin: '',          // 样式文件命名连接符 `component-xx-a.css`
+
+                extractCSS: true,           // 是否将css生成新的文件, 如果为false, 则会内联到js中
+
+                // css scoped
+                cssScopedIdPrefix: 'data-vc_',   // hash前缀：_v-23j232jj
+                cssScopedHashType: 'sum',   // hash生成模式，num：使用`hash-sum`, md5: 使用`fis.util.md5`
+                cssScopedHashLength: 8,     // hash 长度，cssScopedHashType为md5时有效
+
+                cssScopedFlag: '__vuec__',  // 兼容旧的ccs scoped模式而存在，此例子会将组件中所有的`__vuec__`替换为 `scoped id`，不需要设为空
+            })
+        ],
+    },
+    'client/**.vue:js' : {
+        isMod: true,
+        rExt: 'js',
+        useSameNameRequire: true,
+        parser: [
+            // fis.plugin('babel-6.x', {
+            //     presets: ['es2015-loose', 'react', 'stage-3']
+            // }),
+            fis.plugin('babel-5.x', {
+                blacklist: [ 'useStrict' ],
+                loose: ["es6.classes", "es6.properties.computed"]
+            }),
+            // fis.plugin('translate-es3ify', null, 'append')
+        ]
+    },
+    'client/**.vue:scss' : {
+        rExt: 'css',
+        parser: [
+            fis.plugin('node-sass-we', {
+                sourceMap: true,
+                includePaths : [ projectDir ]
+            })
+        ],
+        postprocessor: fis.plugin('autoprefixer-we')
     },
     'client/(page/**.tpl)': {
         url: '${namespace}/$1',
@@ -121,10 +180,6 @@ let serverRoadmap = {
     });
 });
 
-let projectDir = path.dirname(fis.project.getProjectPath());
-let modulesDir = projectDir + '/common/node_modules';
-let distDir = projectDir + '/../dist/';
-let npmModule = 'common';
 
 
 fis.on('conf:loaded', function () {
@@ -133,7 +188,7 @@ fis.on('conf:loaded', function () {
     let npmPackage = grapeUtil.getNpmPackage(modulesDir, npmModule, fis.get('excludeModules'));
     fis.hook('commonjs', {
         packages: npmPackage,
-        extList: ['.js', '.es', '.ts', '.tsx', '.jsx']
+        extList: ['.js', '.es', '.ts', '.tsx', '.jsx', '.vue']
     });
     fis.unhook('components'); // fis3 中预设的是 fis-components，这里不需要，所以先关了。
     fis.hook('node_modules'); // 使用 fis3-hook-node_modules 插件。
