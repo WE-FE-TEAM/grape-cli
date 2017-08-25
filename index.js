@@ -30,6 +30,11 @@ fis.project.setProjectRoot(process.cwd());
 //     //stage: 3
 // });
 
+//css autoprefixer config
+const autoPrefixConfig = {
+    browsers : [ 'ios_saf >= 6.1', 'last 2 version' ]
+};
+
 //添加 grape run命令
 fis.set('modules.commands', ['init', 'install', 'release', 'run', 'inspect']);
 fis.require._cache['command-run'] = require('./command/run.js');
@@ -50,6 +55,7 @@ let clientRoadmap = {
     },
     'client/**.scss': {
         parser: fis.plugin('node-sass-we'),
+        postprocessor: fis.plugin('autoprefixer-we', autoPrefixConfig),
         rExt: '.css'
     },
     'client/**.tpl': {
@@ -122,7 +128,7 @@ let clientRoadmap = {
                 includePaths : [ projectDir ]
             })
         ],
-        postprocessor: fis.plugin('autoprefixer-we')
+        postprocessor: fis.plugin('autoprefixer-we', autoPrefixConfig)
     },
     'client/(page/**.tpl)': {
         url: '${namespace}/$1',
@@ -222,6 +228,11 @@ fis.media('prod')
         useHash : true,
         optimizer : fis.plugin('uglify-js', {
             mangle : false
+        }),
+        preprocessor: fis.plugin('define', {
+            defines: {
+                'process.env.NODE_ENV': JSON.stringify('production')
+            }
         })
     })
     .match('/client/**.{css,scss}', {
