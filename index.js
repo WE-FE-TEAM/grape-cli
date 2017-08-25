@@ -55,6 +55,10 @@ let clientRoadmap = {
     },
     'client/**.scss': {
         parser: fis.plugin('node-sass-we'),
+        rExt: '.css'
+    },
+    'client/**/[^\_]*.scss': {
+        parser: fis.plugin('node-sass-we'),
         postprocessor: fis.plugin('autoprefixer-we', autoPrefixConfig),
         rExt: '.css'
     },
@@ -224,6 +228,17 @@ fis.match('/node_modules/(**.{js,jsx,map,css,scss,less,svg,jpg,png,gif,webp,jpeg
  * prod media 对静态资源进行压缩,md5产出
  */
 fis.media('prod')
+    .match('/node_modules/**.{js,jsx,ts}', {
+        useHash : true,
+        optimizer : fis.plugin('uglify-js', {
+            mangle : false
+        }),
+        preprocessor: fis.plugin('define', {
+            defines: {
+                'process.env.NODE_ENV': JSON.stringify('production')
+            }
+        })
+    })
     .match('/client/**.{js,jsx,ts}', {
         useHash : true,
         optimizer : fis.plugin('uglify-js', {
