@@ -233,22 +233,30 @@ fis.media('prod')
         optimizer : fis.plugin('uglify-js', {
             mangle : false
         }),
-        preprocessor: fis.plugin('define', {
-            defines: {
-                'process.env.NODE_ENV': JSON.stringify('production')
-            }
-        })
+        preprocessor: [
+            fis.plugin('js-require-file'),
+            fis.plugin('js-require-css'),
+            fis.plugin('define', {
+                defines: {
+                    'process.env.NODE_ENV': JSON.stringify('production')
+                }
+            })
+        ]
     })
     .match('/client/**.{js,jsx,ts}', {
         useHash : true,
         optimizer : fis.plugin('uglify-js', {
             mangle : false
         }),
-        preprocessor: fis.plugin('define', {
-            defines: {
-                'process.env.NODE_ENV': JSON.stringify('production')
-            }
-        })
+        preprocessor: [
+            fis.plugin('js-require-file'),
+            fis.plugin('js-require-css'),
+            fis.plugin('define', {
+                defines: {
+                    'process.env.NODE_ENV': JSON.stringify('production')
+                }
+            })
+        ]
     })
     .match('/client/**.{css,scss}', {
         useHash : true,
